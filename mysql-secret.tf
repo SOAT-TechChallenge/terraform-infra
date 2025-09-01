@@ -4,11 +4,13 @@ resource "kubernetes_secret" "mysql_secret" {
   }
 
   data = {
-    MYSQL_ROOT_PASSWORD         = "cm9vdDEyMw=="
-    SPRING_DATASOURCE_PASSWORD   = "cm9vdDEyMw=="
-    SPRING_DATASOURCE_URL      = "jdbc:mysql://terraform-20240930234115520800000001.cpuy8crp9yqu.us-east-1.rds.amazonaws.com:3306/fiap"
-    SPRING_DATASOURCE_USERNAME  = "cm9vdA=="
-    EMAIL_USER  = "dGVjaGNoYWxsZW5nZS5ub3JlcGx5QGdtYWlsLmNvbQ=="
-    EMAIL_PASS  = "c2JqbXJkZmR1d2tqYXFobg=="
+    MYSQL_ROOT_PASSWORD        = "root12345" 
+    SPRING_DATASOURCE_PASSWORD = "root12345" 
+    SPRING_DATASOURCE_URL      = "jdbc:mysql://tech-challenge-db.cbia2wmkcvfh.us-east-1.rds.amazonaws.com:3306/fiap"
+    SPRING_DATASOURCE_USERNAME = "admin"     
+    EMAIL_USER                 = "techchallenge.noreply@gmail.com"  
+    EMAIL_PASS                 = "sbjmrdfduwjdaqhn"  
   }
+  
+  depends_on = [aws_db_instance.mysql_database]
 }

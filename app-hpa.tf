@@ -7,11 +7,13 @@ resource "kubernetes_horizontal_pod_autoscaler" "hpa" {
     scale_target_ref {
       api_version = "apps/v1" 
       kind        = "Deployment"
-      name        = kubernetes_deployment.app_deployment.metadata[0].name 
+      name        = "challenge"
     }
 
     min_replicas = 1
     max_replicas = 10
     target_cpu_utilization_percentage = 50
   }
+
+  depends_on = [kubernetes_deployment.app_deployment]
 }

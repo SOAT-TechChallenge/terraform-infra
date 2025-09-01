@@ -1,18 +1,20 @@
 resource "kubernetes_service" "app_service" {
   metadata {
-    name = "challenge"
+    name = "challenge-service"
   }
 
   spec {
     selector = {
-      app = kubernetes_deployment.app_deployment.metadata[0].labels["app"] 
+      app = "challenge"
     }
 
     port {
-      port       = 8080
-      node_port  = 30005
+      port        = 80
+      target_port = 8080
     }
 
-    type = "NodePort"
+    type = "LoadBalancer"  # Mudei para LoadBalancer para ter IP público
   }
+
+  depends_on = [kubernetes_deployment.app_deployment]
 }
