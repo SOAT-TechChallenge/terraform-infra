@@ -1,9 +1,3 @@
-provider "aws" {
-  region     = "us-east-1"
-  access_key = "ASIAVX7DE5UWELBFNWXG"
-  secret_key = "KLP5WgMv6a9ejAAD6mkqMvGQqkLwJk1QcyZRelq2"
-  token      = "IQoJb3JpZ2luX2VjEK7//////////wEaCXVzLXdlc3QtMiJHMEUCID3oMAhgt9o+JIh675C+VuUBmSjwMKhIVEaUwOt+0nrMAiEAlG4YQLEjqGCzkeab6CLW+d9i+oeHncnKme7AxJHu+GsqswIIFhAAGgwzOTUwNzY0OTY2ODQiDCwwjHKQAJ0djtJFyiqQAoq3SwU549tDtkmrvRnR1sxcmGaouRpM+GBRiS/1VFhEowAMvyK7twk/bVMztnaeEAXjCnHqIcVd+94IVOkNSekZHt10nML+WbWcJVGgoY1J7x735ihMVD4s0Dn+KvPYtwbnQSGpPVs0KqsxformI8nQ417AJulAmZyAvjB/CRaaPFbYWbX1Dw8kb0psZOdlYoKnI0rPZkcM4ZXk9XULBjwV3iQrEXy0euQ98ud2p/w8tWWZHu4q3TA93AosZCxBp6z8TBEoqRXFfqpuT6+JPp2Q662e/PTf3FsB6m5HpIvEK7HVBkOWOUZ6JAOhJzbYu1xFAJ9t6pienpxQ06OU0n+AnMepXd8ZVd78+2OI3CquMOm71sUGOp0BFo23XJB72rDWj7QZX6eSRJm+yy9vDSSIKcFdG8/qgFE3+EFX08BjCJCqVocHlomA+RwcqGvkGwf+/07es2+eoP1zGW6DnYpwuH8jz1hx55ybkXGepIwN/9n7tixTPY1cVHUsUIC0xBEumA7NvFG5ok443tDgVjjIGlLBaVU69Jkoyo5o9x7UlfO/Inr3VR7WkzsYXqKz/FH3Ll2Z+A=="
-}
 
 provider "kubernetes" {
   host                   = aws_eks_cluster.eks_cluster.endpoint
