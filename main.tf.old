@@ -1,3 +1,4 @@
+
 provider "kubernetes" {
   host                   = aws_eks_cluster.eks_cluster.endpoint
   cluster_ca_certificate = base64decode(aws_eks_cluster.eks_cluster.certificate_authority[0].data)
@@ -45,9 +46,9 @@ resource "aws_eks_cluster" "eks_cluster" {
 
   vpc_config {
     subnet_ids = [
-      data.aws_subnet.eks_subnet_1.id,
-      data.aws_subnet.eks_subnet_2.id,
-      data.aws_subnet.eks_subnet_3.id
+        data.aws_subnet.eks_subnet_1.id,
+        data.aws_subnet.eks_subnet_2.id,
+        data.aws_subnet.eks_subnet_3.id
     ]
   }
 }
@@ -56,10 +57,10 @@ resource "aws_eks_node_group" "node_group" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = "app-nodes"
   node_role_arn   = local.worker_role_arn
-  subnet_ids = [
-    data.aws_subnet.eks_subnet_1.id,
-    data.aws_subnet.eks_subnet_2.id,
-    data.aws_subnet.eks_subnet_3.id
+  subnet_ids      = [
+        data.aws_subnet.eks_subnet_1.id,
+        data.aws_subnet.eks_subnet_2.id,
+        data.aws_subnet.eks_subnet_3.id
   ]
 
   scaling_config {
@@ -71,25 +72,19 @@ resource "aws_eks_node_group" "node_group" {
   instance_types = ["t3.medium"]
 }
 
-# --- Repositório ECR ---
-# Repositório para a imgem Docker da aplicação
-resource "aws_ecr_repository" "app_repo" {
-  name = "tech-challenge-application"
-}
-
-# --- Recursos do RDS MySQL ---
+# Recursos do RDS MySQL
 resource "aws_db_instance" "mysql_database" {
-  identifier            = "tech-challenge-db"
-  engine                = "mysql"
-  engine_version        = "8.0"
-  instance_class        = "db.t3.micro"
-  allocated_storage     = 20
+  identifier           = "tech-challenge-db"
+  engine               = "mysql"
+  engine_version       = "8.0"
+  instance_class       = "db.t3.micro"
+  allocated_storage    = 20
   max_allocated_storage = 50
 
-  db_name  = "fiap"
-  username = "admin"
-  password = "root12345"
-  port     = 3306
+  db_name              = "fiap"
+  username             = "admin"
+  password             = "root12345"
+  port                 = 3306
 
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
@@ -105,7 +100,7 @@ resource "aws_db_instance" "mysql_database" {
 }
 
 resource "aws_db_subnet_group" "rds_subnet_group" {
-  name = "rds-subnet-group"
+  name       = "rds-subnet-group"
   subnet_ids = [
     data.aws_subnet.eks_subnet_1.id,
     data.aws_subnet.eks_subnet_2.id,
@@ -123,9 +118,9 @@ resource "aws_security_group" "rds_sg" {
   vpc_id      = data.aws_vpc.existing_vpc.id
 
   ingress {
-    from_port = 3306
-    to_port   = 3306
-    protocol  = "tcp"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
     cidr_blocks = [
       data.aws_subnet.eks_subnet_1.cidr_block,
       data.aws_subnet.eks_subnet_2.cidr_block,
