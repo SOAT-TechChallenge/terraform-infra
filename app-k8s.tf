@@ -91,28 +91,6 @@ resource "kubernetes_deployment" "app_deployment" {
               memory = "512Mi"
             }
           }
-
-          liveness_probe {
-            http_get {
-              path = "/actuator/health/liveness"
-              port = 8080
-            }
-            initial_delay_seconds = 60
-            period_seconds        = 10
-            failure_threshold     = 3
-            timeout_seconds       = 5
-          }
-
-          readiness_probe {
-            http_get {
-              path = "/actuator/health/readiness"
-              port = 8080
-            }
-            initial_delay_seconds = 30
-            period_seconds        = 5
-            failure_threshold     = 3
-            timeout_seconds       = 5
-          }
         }
       }
     }
