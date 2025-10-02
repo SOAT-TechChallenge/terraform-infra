@@ -81,6 +81,16 @@ resource "kubernetes_deployment" "app_deployment" {
             }
           }
 
+          env {
+            name = "MERCADO_PAGO_ACCESS_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = "mysql-secret"
+                key  = "MERCADO_PAGO_ACCESS_TOKEN"
+              }
+            }
+          }
+
           resources {
             limits = {
               cpu    = "1"
@@ -192,8 +202,10 @@ resource "kubernetes_secret" "mysql_secret" {
     SPRING_DATASOURCE_USERNAME = "admin"
     EMAIL_USER                 = "techchallenge.noreply@gmail.com"
     EMAIL_PASS                 = "sbjmrdfduwjdaqhn"
+    MERCADO_PAGO_ACCESS_TOKEN  = "APP_USR-7885298402464176-050508-28625df9a6c9cbd4560bbfc22cb73b98-2416569013"
   }
 }
+
 
 output "app_deployment_name" {
   description = "Deployment name"
