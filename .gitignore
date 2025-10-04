@@ -9,7 +9,6 @@ terraform.tfstate.backup
 .terraform.lock.hcl
 
 # Sensitive files
-terraform.tfvars
 *.env
 *.secret
 secrets.auto.tfvars
