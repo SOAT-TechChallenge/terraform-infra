@@ -26,7 +26,7 @@ resource "helm_release" "ingress_nginx" {
     },
     {
       name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-subnets"
-      value = "${join("\\,", [data.aws_subnet.eks_subnet_private_1.id, data.aws_subnet.eks_subnet_private_2.id])}"
+      value = "${join("\\,", data.aws_subnets.private.ids)}"
     }
   ]
 }

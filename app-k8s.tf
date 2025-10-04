@@ -1,3 +1,21 @@
+resource "kubernetes_secret" "mysql_secret" {
+  metadata {
+    name = "mysql-secret"
+  }
+
+  data = {
+    MYSQL_ROOT_PASSWORD        = var.db_password
+    SPRING_DATASOURCE_PASSWORD = var.db_password
+    SPRING_DATASOURCE_URL      = "jdbc:mysql://${var.rds_endpoint}/fiap"
+    SPRING_DATASOURCE_USERNAME = "admin"
+    EMAIL_USER                 = "techchallenge.noreply@gmail.com"
+    EMAIL_PASS                 = "sbjmrdfduwjdaqhn"
+    MERCADO_PAGO_ACCESS_TOKEN  = "APP_USR-7885298402464176-050508-28625df9a6c9cbd4560bbfc22cb73b98-2416569013"
+  }
+
+  depends_on = [helm_release.ingress_nginx]
+}
+
 resource "kubernetes_deployment" "app_deployment" {
   metadata {
     name = "techchallenge"
@@ -77,6 +95,16 @@ resource "kubernetes_deployment" "app_deployment" {
               secret_key_ref {
                 name = "mysql-secret"
                 key  = "EMAIL_PASS"
+              }
+            }
+          }
+
+          env {
+            name = "MERCADO_PAGO_ACCESS_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = "mysql-secret"
+                key  = "MERCADO_PAGO_ACCESS_TOKEN"
               }
             }
           }
@@ -178,34 +206,4 @@ resource "kubernetes_horizontal_pod_autoscaler" "hpa" {
   }
 
   depends_on = [kubernetes_deployment.app_deployment]
-}
-
-resource "kubernetes_secret" "mysql_secret" {
-  metadata {
-    name = "mysql-secret"
-  }
-
-  data = {
-    MYSQL_ROOT_PASSWORD        = "root12345"
-    SPRING_DATASOURCE_PASSWORD = "root12345"
-    SPRING_DATASOURCE_URL      = "jdbc:mysql://tech-challenge-db.cwhwodgptwy8.us-east-1.rds.amazonaws.com:3306/fiap"
-    SPRING_DATASOURCE_USERNAME = "admin"
-    EMAIL_USER                 = "techchallenge.noreply@gmail.com"
-    EMAIL_PASS                 = "sbjmrdfduwjdaqhn"
-  }
-}
-
-output "app_deployment_name" {
-  description = "Deployment name"
-  value       = kubernetes_deployment.app_deployment.metadata[0].name
-}
-
-output "app_service_name" {
-  description = "Service name"
-  value       = kubernetes_service.app_service.metadata[0].name
-}
-
-output "ingress_name" {
-  description = "Ingress name"
-  value       = kubernetes_ingress_v1.app_ingress.metadata[0].name
 }
