@@ -40,7 +40,7 @@ resource "aws_security_group_rule" "eks_to_rds" {
   to_port                  = 3306
   protocol                 = "tcp"
   security_group_id        = aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id
-  source_security_group_id = var.rds_security_group_id
+  source_security_group_id = data.terraform_remote_state.rds.outputs.rds_security_group_id
   description              = "Allow outbound MySQL to RDS"
 }
 
@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "rds_to_eks" {
   from_port                = 3306
   to_port                  = 3306
   protocol                 = "tcp"
-  security_group_id        = var.rds_security_group_id
+  security_group_id        = data.terraform_remote_state.rds.outputs.rds_security_group_id
   source_security_group_id = aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id
   description              = "Allow MySQL from EKS"
 }

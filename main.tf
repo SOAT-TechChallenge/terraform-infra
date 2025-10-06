@@ -17,8 +17,17 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "techchallenge-tf-state-tch"
+    bucket = "techchallenge-tf"
     key    = "eks/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+data "terraform_remote_state" "rds" {
+  backend = "s3"
+  config = {
+    bucket = "techchallenge-tf"
+    key    = "rds/terraform.tfstate"
     region = "us-east-1"
   }
 }

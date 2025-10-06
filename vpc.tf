@@ -19,7 +19,7 @@ data "aws_subnets" "private" {
   }
 }
 
-# Obter subnets públicas existentes  
+# Obter subnets públicas existentes
 data "aws_subnets" "public" {
   filter {
     name   = "vpc-id"

@@ -4,13 +4,13 @@ resource "kubernetes_secret" "mysql_secret" {
   }
 
   data = {
-    MYSQL_ROOT_PASSWORD        = var.db_password
-    SPRING_DATASOURCE_PASSWORD = var.db_password
-    SPRING_DATASOURCE_URL      = "jdbc:mysql://${var.rds_endpoint}/fiap"
-    SPRING_DATASOURCE_USERNAME = "admin"
-    EMAIL_USER                 = "techchallenge.noreply@gmail.com"
-    EMAIL_PASS                 = "sbjmrdfduwjdaqhn"
-    MERCADO_PAGO_ACCESS_TOKEN  = "APP_USR-7885298402464176-050508-28625df9a6c9cbd4560bbfc22cb73b98-2416569013"
+    MYSQL_ROOT_PASSWORD        = jsondecode(data.aws_secretsmanager_secret_version.db_password.secret_string)["db_password"]
+    SPRING_DATASOURCE_PASSWORD = jsondecode(data.aws_secretsmanager_secret_version.db_password.secret_string)["db_password"]
+    SPRING_DATASOURCE_URL      = "jdbc:mysql://${data.terraform_remote_state.rds.outputs.rds_endpoint}/fiap"
+    SPRING_DATASOURCE_USERNAME = jsondecode(data.aws_secretsmanager_secret_version.db_username.secret_string)["db_username"]
+    EMAIL_USER                 = jsondecode(data.aws_secretsmanager_secret_version.email_user.secret_string)["email_user"]
+    EMAIL_PASS                 = jsondecode(data.aws_secretsmanager_secret_version.email_password.secret_string)["email_password"]
+    MERCADO_PAGO_ACCESS_TOKEN  = jsondecode(data.aws_secretsmanager_secret_version.mercado_pago_token.secret_string)["mercado_pago_token"]
   }
 
   depends_on = [helm_release.ingress_nginx]
