@@ -2,19 +2,16 @@ name: Deploy to EKS with Terraform
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - developer
   pull_request:
-    branches:
-      - main
-      - developer
+    branches: [main]
+  push:
+    branches: [main]
 
 jobs:
   terraform:
     name: 'Terraform Plan and Apply'
     runs-on: ubuntu-latest
+    environment: secrets
 
     steps:
       - name: 'Checkout GitHub Repository'
