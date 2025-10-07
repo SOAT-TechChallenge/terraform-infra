@@ -13,7 +13,7 @@ resource "kubernetes_secret" "mysql_secret" {
     MERCADO_PAGO_ACCESS_TOKEN  = jsondecode(data.aws_secretsmanager_secret_version.mercado_pago_token.secret_string)["mercado_pago_token"]
   }
 
-  depends_on = [helm_release.ingress_nginx, aws_eks_cluster.eks_cluster.name]
+  depends_on = [helm_release.ingress_nginx, aws_eks_cluster.eks_cluster]
 }
 
 resource "kubernetes_deployment" "app_deployment" {
@@ -127,7 +127,7 @@ resource "kubernetes_deployment" "app_deployment" {
   depends_on = [
     kubernetes_secret.mysql_secret,
     helm_release.ingress_nginx,
-    aws_eks_cluster.eks_cluster.name
+    aws_eks_cluster.eks_cluster
   ]
 }
 
