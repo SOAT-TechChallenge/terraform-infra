@@ -33,6 +33,17 @@ jobs:
       - name: 'Terraform Init'
         run: terraform init
 
+      - name: 'State Cleanup: Remove ALL K8s Resources from State'
+        id: state_cleanup
+        run: |
+          terraform state rm 'kubernetes_secret.mysql_secret' || true
+          terraform state rm 'helm_release.ingress_nginx' || true
+          terraform state rm 'kubernetes_deployment.app_deployment' || true
+          terraform state rm 'kubernetes_service.app_service' || true
+          terraform state rm 'kubernetes_ingress_v1.app_ingress' || true
+          terraform state rm 'kubernetes_horizontal_pod_autoscaler.hpa' || true
+        continue-on-error: true
+
       - name: 'Terraform Plan'
         run: terraform plan
 
