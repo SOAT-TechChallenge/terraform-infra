@@ -33,6 +33,14 @@ jobs:
       - name: 'Terraform Init'
         run: terraform init
 
+      - name: 'State Cleanup: Remove K8s Resources from State'
+        id: state_cleanup
+        run: |
+          echo "Limpando estado de recursos K8s antigos do tfstate"
+          terraform state rm 'kubernetes_secret.mysql_secret' || true
+          terraform state rm 'helm_release.ingress_nginx' || true
+        continue-on-error: true
+
       - name: 'Terraform Plan'
         run: terraform plan
 
